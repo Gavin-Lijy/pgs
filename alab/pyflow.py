@@ -1726,7 +1726,7 @@ class PBSTaskRunner(CommandTaskRunner) :
 		#pollCmd = ("/bin/bash", "--noprofile", "-o", "pipefail", "-c", "qstat -j %i | awk '/^error reason/'" % (self.jobId))
 		#pollCmd = ' '.join( ["/bin/bash", "--noprofile", "-o", "pipefail", "-c", "qstat -f ", ''.join(self.jobId), "| awk '/^error reason/'"])
 		#pollCmd = ("/bin/bash", "--noprofile", "-o", "pipefail", "-c", "qstat -f %s | awk '/^error reason/'" % ''.join(self.jobId).rstrip())
-		pollCmd = ("/bin/bash", "--noprofile", "-o", "pipefail", "-c", "qstat -f %s | grep \"job_state\|exit_status\"" % ''.join(self.jobId).rstrip())
+		pollCmd = ("/bin/bash", "--noprofile", "-o", "pipefail", "-c", r"qstat -f %s | grep \"job_state\|exit_status\"" % ''.join(self.jobId).rstrip())
 		
 		while not self.stopped():
 			results = qcallWithTimeouts(pollCmd, 6)

@@ -37,7 +37,7 @@ import copy
 from . import plots
 
 class structuresummary(object):
-    """
+    r"""
     This class offers a series of methods to study the model structure populations.
     
     Parameters

@@ -86,7 +86,7 @@ class contactmatrix(object):
                 from .alabio import loadstream
                 f    = loadstream(filename)
                 s    = next(f)
-                line = re.split('\t+|\s+',s.rstrip())
+                line = re.split(r'\t+|\s+',s.rstrip())
                 n    = len(line) - 3
                 expectn = n
                 if isinstance(genome,str) and isinstance(resolution,int):
@@ -103,7 +103,7 @@ class contactmatrix(object):
                 self.matrix[i] = line[3:]
                 for s in f:
                     i += 1
-                    line = re.split('\t+|\s+',s.rstrip())
+                    line = re.split(r'\t+|\s+',s.rstrip())
                     tidx = line[0:3];tidx.append('')
                     idx.append(tidx)
                     self.matrix[i] = line[3:]

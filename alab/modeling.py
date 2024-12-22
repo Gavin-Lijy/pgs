@@ -574,7 +574,7 @@ class tadmodel(object):
         for rs in restraintset:
             score = rs.get_score()
             rsstr = rs.get_name()
-            dist,k = re.findall(': (\d+.\d+) k = (\d+.\d+)',rsstr)[0]
+            dist,k = re.findall(r': (\d+.\d+) k = (\d+.\d+)',rsstr)[0]
             dist = float(dist)
             k    = float(k)
             if (2*score/k)**0.5 > tolerance*dist:
