@@ -50,7 +50,7 @@ import time
 import traceback
 import random
 
-from .pyflowConfig import siteConfig
+from pyflowConfig import siteConfig
 
 moduleDir = os.path.abspath(os.path.dirname(__file__))
 
@@ -196,16 +196,16 @@ def timeStrNow():
 
 def timeStrToTimeStamp(ts):
 	import calendar
-	d = datetime.datetime(*list(map(int, re.split(r'[^\d]', ts)[:-1])))
+	d = datetime.datetime(*map(int, re.split(r'[^\d]', ts)[:-1]))
 	return calendar.timegm(d.timetuple())
 
 
 
 def isInt(x) :
-	return isinstance(x, int)
+	return isinstance(x, (int, long))
 
 def isString(x):
-	return isinstance(x, str)
+	return isinstance(x, basestring)
 
 
 def isIterable(x):
@@ -415,7 +415,7 @@ def argToBool(x) :
 	class FalseStrings :
 		val = ("", "0", "false", "f", "no", "n", "off")
 
-	if isinstance(x, str) :
+	if isinstance(x, basestring) :
 		return (x.lower() not in FalseStrings.val)
 	return bool(x)
 
@@ -549,7 +549,7 @@ def stackDump(dumpfp):
 	for name in tnames : dumpfp.write("  %s\n" % (name))
 	dumpfp.write("\n")
 
-	for tid, stack in list(frames.items()):
+	for tid, stack in frames.items():
 		dumpfp.write("Thread: %d %s\n" % (tid, id2name.get(tid, "NAME_UNKNOWN")))
 		for filename, lineno, name, line in traceback.extract_stack(stack):
 			dumpfp.write('File: "%s", line %d, in %s\n' % (filename, lineno, name))
@@ -753,7 +753,7 @@ def writeDotScript(taskDotScriptFile,
 	"""
 	import inspect
 
-	dsfp = os.fdopen(os.open(taskDotScriptFile, os.O_WRONLY | os.O_CREAT, 0o755), 'w')
+	dsfp = os.fdopen(os.open(taskDotScriptFile, os.O_WRONLY | os.O_CREAT, 0755), 'w')
 
 	dsfp.write("""#!/usr/bin/env python
 #
@@ -2123,7 +2123,7 @@ class TaskManager(StoppableThread) :
 		Node status accordingly:
 		"""
 		notrunning = set()
-		for task in list(self.runningTasks.keys()) :
+		for task in self.runningTasks.keys() :
 			if self.stopped() : break
 			trun = self.runningTasks[task]
 			if not task.runStatus.isComplete.isSet() :
@@ -2187,13 +2187,13 @@ class TaskManager(StoppableThread) :
 	@lockMethod
 	def stop(self) :
 		StoppableThread.stop(self)
-		for trun in list(self.runningTasks.values()) :
+		for trun in self.runningTasks.values() :
 			trun.stop()
 
 
 	@lockMethod
 	def _areTasksDead(self) :
-		for trun in list(self.runningTasks.values()) :
+		for trun in self.runningTasks.values() :
 			if trun.isAlive(): return False
 		return True
 
@@ -2552,7 +2552,7 @@ class TaskDAG(object) :
 	@lockMethod
 	def isRunComplete(self) :
 		"returns true if run is complete and error free"
-		for node in list(self.labelMap.values()):
+		for node in self.labelMap.values():
 			if node.isIgnoreThis : continue
 			if not node.isComplete() :
 				return False
@@ -2951,9 +2951,9 @@ class WorkflowRunnerThreadSharedData(object) :
 				raise Exception("Invalid run mode memMb argument: %s. Value must be 'unlimited' or an integer no less than 1" % (param.memMb))
 
 		# verify/normalize input settings:
-		if param.mode not in list(RunMode.data.keys()) :
+		if param.mode not in RunMode.data.keys() :
 			raise Exception("Invalid mode argument '%s'. Accepted modes are {%s}." \
-							% (param.mode, ",".join(list(RunMode.data.keys()))))
+							% (param.mode, ",".join(RunMode.data.keys())))
 
 		if param.mode == "sge" :
 			# TODO not-portable to windows (but is this a moot point -- all of sge mode is non-portable, no?):
@@ -3516,7 +3516,7 @@ class WorkflowRunner(object) :
 			except KeyboardInterrupt:
 				msg = "Keyboard Interrupt, shutting down running tasks..."
 				self._killWorkflow(msg)
-			except DataDirException as e:
+			except DataDirException, e:
 				self._notify(e.msg,logState=LogState.ERROR)
 			except:
 				exceptionMessaging()
@@ -4138,7 +4138,7 @@ class WorkflowRunner(object) :
 	@staticmethod
 	def _checkTaskLabel(label) :
 		# sanity check label:
-		if not isinstance(label, str) :
+		if not isinstance(label, basestring) :
 			raise Exception ("Task label is not a string")
 		if label == "" :
 			raise Exception ("Task label is empty")

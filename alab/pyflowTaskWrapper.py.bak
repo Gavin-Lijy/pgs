@@ -177,7 +177,7 @@ def getParams(paramsFile) :
     paramhash = pickle.load(open(paramsFile))
     class Params : pass
     params = Params()
-    for (k, v) in list(paramhash.items()) : setattr(params, k, v)
+    for (k, v) in paramhash.items() : setattr(params, k, v)
     return params
 
 
