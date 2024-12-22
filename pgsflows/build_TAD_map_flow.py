@@ -112,14 +112,14 @@ class BuildTADMapFlow(WorkflowRunner):
 			source = '%s/buildTADMap.py' % self.input_config['source_dir']
 			
 			args = [
-				python_path,
-				source, 
-				'--matrixfile', matrixFile, 
-				'--domainfile', domainFile,
-				'--outputfile', outputfile,
-				'--genome', genome, 
-				'--resolution % i' % resolution
-				]
+					python_path,
+					source, 
+					'--matrixfile', matrixFile, 
+					'--domainfile', domainFile,
+					'--outputfile', outputfile,
+					'--genome', genome, 
+					'--resolution % i' % resolution
+					]
 		
 		 	task_label = "buildTADMap_flow"
 			self.addTask(label=task_label, command=' '.join(args), nCores=nCores, memMb=memMb, retryMax=3, retryWait=2, retryWindow=0, retryMode="all")	

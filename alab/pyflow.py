@@ -58,8 +58,8 @@ moduleDir = os.path.abspath(os.path.dirname(__file__))
 # minimum python version
 #
 pyver = sys.version_info
-if pyver[0] != 2 or (pyver[0] == 2 and pyver[1] < 4) :
-	raise Exception("pyflow module has only been tested for python versions [2.4,3.0)")
+# if pyver[0] != 2 or (pyver[0] == 2 and pyver[1] < 4) :
+# 	raise Exception("pyflow module has only been tested for python versions [2.4,3.0)")
 
 # problem python versions:
 #
@@ -84,11 +84,11 @@ subprocess._cleanup = lambda: None
 # run. Below it is lowered to 256Kb (compare to linux defualt of
 # 8Mb).
 #
-try:
-	threading.stack_size(min(256 * 1024, threading.stack_size))
-except AttributeError:
-	# Assuming this means python version < 2.5
-	pass
+# try:
+# 	threading.stack_size(min(256 * 1024, threading.stack_size))
+# except AttributeError:
+# 	# Assuming this means python version < 2.5
+# 	pass
 
 
 class GlobalSync :

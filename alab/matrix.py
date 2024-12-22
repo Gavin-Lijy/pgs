@@ -74,12 +74,12 @@ class contactmatrix(object):
             if os.path.splitext(filename)[1] == '.hdf5' or os.path.splitext(filename)[1] == '.hmat':
                 h5f = h5py.File(filename,'r')
                 self.matrix = h5f['matrix'][:]
-                self.idx    = h5f['idx'][:]
+                self.idx = h5f['idx'][:]
                 if 'applyedMethods' in list(h5f.keys()):
                     self._applyedMethods = pickle.loads(h5f['applyedMethods'].value)
                 
                 if 'genome' in list(h5f.keys()) and 'resolution' in list(h5f.keys()):         
-                    self.genome     = pickle.loads(h5f['genome'].value)
+                    self.genome = pickle.loads(h5f['genome'].value)
                     self.resolution = pickle.loads(h5f['resolution'].value)
                 h5f.close()
             else:
@@ -90,13 +90,13 @@ class contactmatrix(object):
                 n    = len(line) - 3
                 expectn = n
                 if isinstance(genome,str) and isinstance(resolution,int):
-                    genomedb    = alabutils.genome(genome,usechr=usechr)
-                    bininfo     = genomedb.bininfo(resolution)
-                    expectn     = len(bininfo.chromList)
+                    genomedb = alabutils.genome(genome,usechr=usechr)
+                    bininfo = genomedb.bininfo(resolution)
+                    expectn = len(bininfo.chromList)
                 if expectn != n:
                     raise RuntimeError("Dimension don't match, expected %s bins , get %s bins. Please check the input." %(expectn,n))
-                idx  = []
-                i    = 0
+                idx = []
+                i = 0
                 tidx = line[0:3];tidx.append('')
                 idx.append(tidx)
                 self.matrix = np.zeros((n,n),dtype = np.float32)
@@ -108,9 +108,9 @@ class contactmatrix(object):
                     idx.append(tidx)
                     self.matrix[i] = line[3:]
                 f.close()
-                self.idx    = np.core.records.fromarrays(np.array(idx).transpose(),dtype=self._idxdtype)
+                self.idx = np.core.records.fromarrays(np.array(idx).transpose(),dtype=self._idxdtype)
         else:
-			raise RuntimeError("Undefined input filename type!\n")
+		        raise RuntimeError("Undefined input filename type!\n")
         #----------------end filename
         
         if isinstance(genome,str) and isinstance(resolution,int):
